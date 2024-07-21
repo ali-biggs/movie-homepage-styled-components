@@ -12,7 +12,7 @@ export default function ErrorModal({
   errors,
   isOpen,
   onClose,
-}: ErrorModalProps) {
+}: Readonly<ErrorModalProps>) {
   if (!isOpen) return null;
 
   return (

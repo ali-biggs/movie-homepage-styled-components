@@ -8,7 +8,7 @@ type MovieListProps = {
   genres: [];
 };
 
-export default function MovieList({ movies, genres }: MovieListProps) {
+export default function MovieList({ movies, genres }: Readonly<MovieListProps>) {
   const testArray = movies.slice(0, 3);
   return (
     <MoviesWrapper role="list" aria-label="Movie list">

@@ -6,7 +6,7 @@ type CheckBoxProps = {
   id: number | string;
 };
 
-export default function CheckBox({ label, id }: CheckBoxProps) {
+export default function CheckBox({ label, id }: Readonly<CheckBoxProps>) {
   const [checked, setChecked] = useState<boolean>(false);
 
   const handleCheckboxChange = () => {

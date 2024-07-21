@@ -33,7 +33,7 @@ export default function ExpandableFilters({
   ratings,
   languages,
   searchMovies,
-}: ExpandableFiltersProps) {
+}: Readonly<ExpandableFiltersProps>) {
   const [showGenres, setShowGenres] = useState<boolean>(true);
   const [showMinVote, setShowMinVote] = useState<boolean>(false);
   const [showLanguage, setShowLanguage] = useState<boolean>(false);

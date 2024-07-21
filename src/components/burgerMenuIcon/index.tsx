@@ -7,7 +7,7 @@ type BurgerMenuIconProps = {
   isOpen: boolean;
 };
 
-export default function BurgerMenuIcon({onClick, isOpen}: BurgerMenuIconProps) {
+export default function BurgerMenuIcon({onClick, isOpen}: Readonly<BurgerMenuIconProps>) {
   return (
     <BurgerMenu onClick={onClick} aria-label="Menu" aria-expanded={isOpen}>
       <BurgerLine />

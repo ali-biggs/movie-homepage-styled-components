@@ -6,11 +6,9 @@ import BurgerMenuIcon from "../../components/burgerMenuIcon";
 import {
   getLanguageOptions,
   getGenreOptions,
-  getMovieByMinVote,
   getMovieByKeywordAndYear,
   getPopularMovies,
   getTotalMovieCount,
-  getMovieDetails,
 } from "../../utils/fetcher";
 import { useMediaQuery } from "../../utils/useMediaQuery";
 import { media } from "../../utils/mediaBreakPoints";
@@ -22,7 +20,7 @@ type DiscoverProps = {
   isOpen: boolean;
 };
 
-export default function Discover({ toggleNavBar, isOpen }: DiscoverProps) {
+export default function Discover({ toggleNavBar, isOpen }: Readonly<DiscoverProps>) {
   // You don't need to keep the current structure of this state object. Feel free to restructure it as needed.
   const [state, setState] = useState({
     keyword: "",

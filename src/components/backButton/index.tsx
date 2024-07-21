@@ -5,7 +5,7 @@ type BackButtonProps = {
   onClick: () => void;
 };
 
-export default function BackButton({ onClick }: BackButtonProps) {
+export default function BackButton({ onClick }: Readonly<BackButtonProps>) {
   return (
     <ButtonContainer onClick={onClick} aria-label="Close menu">
       <Chevron />

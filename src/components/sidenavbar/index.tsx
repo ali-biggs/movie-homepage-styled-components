@@ -22,7 +22,7 @@ type SideNavBarProps = {
   toggleNavBar: () => void;
 };
 
-export default function SideNavBar({ isOpen, toggleNavBar }: SideNavBarProps) {
+export default function SideNavBar({ isOpen, toggleNavBar }: Readonly<SideNavBarProps>) {
   const isMobile: boolean = useMediaQuery("(max-width: 480px)");
   return (
     <SideNavBarCont

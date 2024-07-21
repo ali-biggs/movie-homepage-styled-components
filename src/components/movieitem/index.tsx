@@ -18,7 +18,7 @@ type MovieItemProps = {
   genreList: { id: number; name: string }[];
 };
 
-export default function MovieItem({ movie, genreList }: MovieItemProps) {
+export default function MovieItem({ movie, genreList }: Readonly<MovieItemProps>) {
   const isMobile: boolean = useMediaQuery("(max-width: 480px)");
   const getGenreLabels = (
     ids: number[],

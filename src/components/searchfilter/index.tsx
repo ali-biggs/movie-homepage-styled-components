@@ -30,7 +30,7 @@ export default function SearchFilters({
   ratings,
   languages,
   searchMovies,
-}: SearchFiltersProps) {
+}: Readonly<SearchFiltersProps>) {
   return (
     <FiltersWrapper>
       <SearchFiltersCont marginBottom className="search_inputs_cont">
