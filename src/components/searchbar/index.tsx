@@ -38,6 +38,7 @@ export default function SearchBar({ searchMovies }: Readonly<SearchBarProps>) {
           <KeySearchIcon magnifyingGlass />
           <KeyWordInput
             onBlur={handleMovieSearch}
+            onKeyDown={handleMovieSearch}
             onChange={(e) => setKeyWord(e.target.value)}
             aria-label="Search for movie using key word"
           />
@@ -55,6 +56,7 @@ export default function SearchBar({ searchMovies }: Readonly<SearchBarProps>) {
           <KeySearchIcon calendar />
           <YearInput
             onBlur={handleMovieSearch}
+            onKeyDown={handleMovieSearch}
             onChange={(e) => setReleaseYear(e.target.value)}
             aria-label="Search for movie using year"
           />
