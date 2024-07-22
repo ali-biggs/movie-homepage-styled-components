@@ -101,7 +101,6 @@ const MovieHeader = styled.div`
   display: flex;
   justify-content: space-between;
   padding-left: 15px;
-  padding-right: 15px;
   align-items: center;
 `;
 
@@ -150,7 +149,6 @@ const MovieDescription = styled.div`
   display: inline-block;
   padding-top: 10px;
   padding-left: 15px;
-  padding-right: 15px;
   color: ${colors.fontColor};
 
   @media ${media.mobile} {
