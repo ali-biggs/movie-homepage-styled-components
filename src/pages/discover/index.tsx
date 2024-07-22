@@ -1,5 +1,6 @@
 import React, { Suspense, Profiler } from "react";
 import styled from "styled-components";
+import { useMovieStore } from "../../store";
 import SearchFilters from "../../components/searchfilter";
 import MovieList from "../../components/movielist";
 import BurgerMenuIcon from "../../components/burgerMenuIcon";
@@ -7,7 +8,7 @@ import { useMediaQuery } from "../../utils/useMediaQuery";
 import { media } from "../../utils/mediaBreakPoints";
 import { onRender } from "../../utils/onRender";
 import ErrorModal from "../../components/errorModal";
-import { useMovieStore } from "../../store";
+import LoadingSpinner from "../../components/loadingSpinner";
 
 type DiscoverProps = {
   toggleNavBar: () => void;
@@ -58,14 +59,15 @@ export default function Discover({
           </TotalCounter>
         )}
         <GridContainer>
-          <Suspense fallback={<Loading />}>
-            <MovieResults>
+          <MovieResults>
+            <Suspense fallback={<LoadingSpinner />}>
               <MovieList
                 movies={(results as []) || []}
                 genres={(genreOptions as []) || []}
               />
-            </MovieResults>
-          </Suspense>
+            </Suspense>
+          </MovieResults>
+
           {isMobile && totalCount > 0 && (
             <TotalCounter aria-label="Movie count">
               {totalCount} movies
@@ -86,11 +88,13 @@ export default function Discover({
       </DiscoverWrapper>
 
       {modalOpen && (
-        <ErrorModal
-          errors={modalErrors}
-          isOpen={modalOpen}
-          onClose={() => handleModalClose()}
-        />
+ 
+          <ErrorModal
+            errors={modalErrors}
+            isOpen={modalOpen}
+            onClose={() => handleModalClose()}
+          />
+       
       )}
     </Profiler>
   );
@@ -146,7 +150,3 @@ const MobilePageTitle = styled.h1`
     font-size: 30px;
   }
 `;
-
-function Loading() {
-  return <h2>Loading...</h2>;
-}

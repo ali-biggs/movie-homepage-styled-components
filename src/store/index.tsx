@@ -1,14 +1,14 @@
-import create from 'zustand';
+import { create } from "zustand";
 import {
   getLanguageOptions,
   getGenreOptions,
   getMovieByKeywordAndYear,
   getPopularMovies,
   getTotalMovieCount,
-} from '../utils/fetcher';
+} from "../utils/fetcher";
 
 export const useMovieStore = create((set) => ({
-  keyword: '',
+  keyword: "",
   year: 0,
   results: [],
   totalCount: 0,
@@ -22,10 +22,10 @@ export const useMovieStore = create((set) => ({
     { id: 10, name: 10 },
   ],
   languageOptions: [
-    { id: 'GR', name: 'Greek' },
-    { id: 'EN', name: 'English' },
-    { id: 'RU', name: 'Russian' },
-    { id: 'PO', name: 'Polish' },
+    { id: "GR", name: "Greek" },
+    { id: "EN", name: "English" },
+    { id: "RU", name: "Russian" },
+    { id: "PO", name: "Polish" },
   ],
   modalOpen: false,
   modalErrors: [],
@@ -38,12 +38,15 @@ export const useMovieStore = create((set) => ({
   setKeyword: (keyword: string) => set({ keyword }),
   setYear: (year: number) => set({ year }),
 
-  searchMovies: async (keyword:string , year: number) => {
+  searchMovies: async (keyword: string, year: number) => {
     const searchResults = await getMovieByKeywordAndYear(keyword, year);
     if (searchResults.length > 0) {
       set({ results: searchResults, totalCount: searchResults.length });
     } else {
-      set({ modalErrors: ['There are no matches for this search'], modalOpen: true });
+      set({
+        modalErrors: ["There are no matches for this search"],
+        modalOpen: true,
+      });
     }
   },
 
@@ -61,7 +64,7 @@ export const useMovieStore = create((set) => ({
         languageOptions,
       });
     } catch (error) {
-      console.error('Error fetching initial data: ', error);
+      console.error("Error fetching initial data: ", error);
     }
   },
 }));

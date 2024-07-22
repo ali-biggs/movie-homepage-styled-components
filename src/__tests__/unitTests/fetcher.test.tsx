@@ -6,7 +6,6 @@ import {
   getMovieByMinVote,
   getMovieByKeywordAndYear,
   getPopularMovies,
-  getTotalMovieCount,
   getMovieDetails,
 } from "../../utils/fetcher";
 
@@ -171,7 +170,7 @@ describe("API Calls", () => {
         .reply(200, data);
 
       try {
-        const movies = await getGenreOptions();
+        const movies = await getMovieByMinVote(vote);
         console.log("Received movies:", movies);
         expect(movies).toEqual(data.results);
       } catch (error) {
