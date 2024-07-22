@@ -28,7 +28,7 @@ export default function ErrorModal({
           );
         })}
 
-        <CloseButton onClick={onClose}>Close</CloseButton>
+        <CloseButton onClick={onClose} role="close-button">Close</CloseButton>
       </ModalWrapper>
     </Overlay>
   );
