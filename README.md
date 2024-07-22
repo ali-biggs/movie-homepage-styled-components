@@ -1,46 +1,56 @@
-# Getting Started with Create React App
+# Cohire Coding Challenge (Frontend)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Last Updated
 
-## Available Scripts
+18-06-2024
 
-In the project directory, you can run:
+### Introduction
 
-### `npm start`
+Welcome! This coding challenge is designed to explore your React & SCSS frontend skills. You will have to create a simple SPA based off the provided mockup and make a few API calls to a public web API.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### The challenge
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+You have to complete the test and write any necessary code so that the search page looks like this [mockup]. All the images/icons you need are already imported into this repository.
 
-### `npm test`
+The discover page should enable the user to search for movies as keywords are typed into the search bar. Functionality for filtering does not need to be implemented, however the filter categories should still be expandable upon clicking. On mobile devices, the navigation bar should slide in from left to right when the user clicks on the hamburger icon.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+As you may have noticed, there are a few TypeScript errors that need to be fixed. Also, there are some UI bugs that you should spot and fix. If time permits, you would want to add responsive stylesheets for the app to run smoothly on mobile devices.
 
-### `npm run build`
+Movie data can be queried via:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- [theMovieDB]
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Packages & Technologies used in the repo:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `axios`
+- `node-sass`
+- `react-router-dom`
+- `styled-components`
+- `typescript`
 
-### `npm run eject`
+### Setup guide
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+1. Clone this repo
+2. `npm i --legacy-peer-deps` to install dependencies. Node v16^ preferable
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Submission guide
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Please create a git repository of your solution and send the link to your contact person once you are done.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### How we review
 
-## Learn More
+- **Design**: Were you able to translate the mockup into a web application that works well on various browsers and devices? Does the output match the mockup? This is the most important aspect. Weight: 50%
+- **Functionality**: Does the search function work? Do the results load instantly as the user types? If the API backend has rate limiting enforced, how do you implement the aforementioned while also taking rate limiting into account? Weight: 25%
+- **Code quality**: Is the code easy to understand and maintain? Is the coding style consistent with the language's best practices? Do you demonstrate a good grasp of JavaScript, especially ES6? Weight: 15%
+- **Performance**: Does the UI render quickly? Are the choice of libraries etc appropriate for the web page? Weight: 10%
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Bonus points
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **Documentation** - Is the README well written? Are the commit messages clear?
+- **Automated Tests** - Are there any automated frontend tests?
+- **Reporting** - React Profiler report with demonstrated knowledge of reading / reporting performance data
+- **Production-readiness** - Is there proper error handling? Is the code ready to put into production? Code-Splitting?
+- **Future-readiness** - React Hooks? Web workers? PWA? Client-side caching?
+
+[mockup]: https://cord-coding-challenges.s3-eu-west-1.amazonaws.com/frontend-test-mockups.zip
+[theMovieDB]: https://www.themoviedb.org/documentation/api

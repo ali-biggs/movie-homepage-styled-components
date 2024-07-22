@@ -18,7 +18,10 @@ type MovieItemProps = {
   genreList: { id: number; name: string }[];
 };
 
-export default function MovieItem({ movie, genreList }: Readonly<MovieItemProps>) {
+export default function MovieItem({
+  movie,
+  genreList,
+}: Readonly<MovieItemProps>) {
   const isMobile: boolean = useMediaQuery("(max-width: 480px)");
   const getGenreLabels = (
     ids: number[],
@@ -45,9 +48,11 @@ export default function MovieItem({ movie, genreList }: Readonly<MovieItemProps>
       </LeftCont>
       <RightCont>
         <MovieHeader>
+          <MovieTitleContainer>
           <MovieTitle id={`movie-title-${movie.title}`}>
             {movie.title}
           </MovieTitle>
+          </MovieTitleContainer>
           <RatingBox id={`movie-rating-${movie.vote_average.toFixed(1)}`}>
             {movie.vote_average.toFixed(1)}
           </RatingBox>
@@ -63,12 +68,12 @@ export default function MovieItem({ movie, genreList }: Readonly<MovieItemProps>
           <MovieDescription aria-label="Movie description">
             {isMobile ? applyLastLineFade(movie.overview) : movie.overview}
           </MovieDescription>
-          <MovieRelease
-            id={`movie-release-date-${formatUkDate(movie.release_date)}`}
-          >
-            {formatUkDate(movie.release_date)}
-          </MovieRelease>
         </DescriptionContainer>
+        <MovieRelease
+          id={`movie-release-date-${formatUkDate(movie.release_date)}`}
+        >
+          {formatUkDate(movie.release_date)}
+        </MovieRelease>
       </RightCont>
     </MovieItemWrapper>
   );
@@ -77,37 +82,55 @@ export default function MovieItem({ movie, genreList }: Readonly<MovieItemProps>
 const MovieItemWrapper = styled.div`
   position: relative;
   background-color: white;
-  border-radius: 3px;
   display: grid;
   grid-template-columns: 0.5fr 2fr;
   grid-gap: 2px;
   padding: 20px;
+
+  @media ${media.tabletPortrait} {
+    width: 100%;
+    height: 200px;
+  }
 `;
 
 const LeftCont = styled.div`
   display: inline-block;
 `;
 
-const MoviePoster = styled.img`
-  width: 100%;
-  height: auto;
+const RightCont = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
-const RightCont = styled.div`
-  display: inline-block;
+const MoviePoster = styled.img`
+  width: 100%;
+  height: 100%;
+
+  @media ${media.mobile} {
+    width: 100px;
+    height: 100%;
+  }
 `;
 
 const MovieHeader = styled.div`
   display: flex;
   justify-content: space-between;
   padding-left: 15px;
-  align-items: center;
+  align-items: flex-start;
+`;
+
+const MovieTitleContainer = styled.div`
+  flex: 1;
+  padding-right: 10px; 
 `;
 
 const MovieTitle = styled.div`
   font-size: 1.3em;
   font-weight: 900;
   color: ${colors.fontColor};
+  line-height: 1.2; 
+  white-space: pre-wrap;
 `;
 
 const RatingBox = styled.div`
@@ -116,6 +139,7 @@ const RatingBox = styled.div`
   background-color: ${colors.primaryColor};
   padding: 3px;
   border-radius: 5px;
+  flex-shrink: 0;
 `;
 
 const GenreRow = styled.div`
@@ -140,27 +164,30 @@ const Genre = styled.div`
 `;
 
 const DescriptionContainer = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `;
 
 const MovieDescription = styled.div`
-  display: inline-block;
+  /* display: inline-block; */
   padding-top: 10px;
   padding-left: 15px;
   color: ${colors.fontColor};
 
   @media ${media.mobile} {
-    height: 105px;
+    height: 103px;
     overflow: hidden;
+    font-size: 0.8em;
   }
 `;
 
 const MovieRelease = styled.div`
-  padding-top: 40px;
+  /* padding-top: 40px; */
   padding-left: 15px;
   font-size: 0.8em;
   font-weight: 500;
   color: ${colors.primaryColor};
+  align-self: flex-start;
 `;
