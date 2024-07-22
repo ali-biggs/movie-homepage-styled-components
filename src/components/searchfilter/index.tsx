@@ -9,41 +9,15 @@ interface SearchFiltersContProps {
   marginBottom?: boolean;
 }
 
-type SearchFiltersProps = {
-  genres: {
-    id: number;
-    name: string;
-  }[];
-  ratings: {
-    id: number;
-    name: number;
-  }[];
-  languages: {
-    id: string;
-    name: string;
-  }[];
-  searchMovies: (keyword: string | undefined, year: number | undefined) => void;
-};
-
-export default function SearchFilters({
-  genres,
-  ratings,
-  languages,
-  searchMovies,
-}: Readonly<SearchFiltersProps>) {
+export default function SearchFilters() {
   return (
     <FiltersWrapper>
       <SearchFiltersCont marginBottom className="search_inputs_cont">
-        <SearchBar searchMovies={searchMovies} />
+        <SearchBar />
       </SearchFiltersCont>
       <ExpandableFiltersCont className="expandable_filters_cont">
         <CategoryTitle>Movie</CategoryTitle>
-        <ExpandableFilters
-          genres={genres}
-          ratings={ratings}
-          languages={languages}
-          searchMovies={searchMovies}
-        />
+        <ExpandableFilters />
       </ExpandableFiltersCont>
     </FiltersWrapper>
   );

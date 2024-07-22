@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import * as colors from "../../colors";
 
 import Checkbox from "../checkbox";
+import { useMovieStore } from "../../store";
 
 interface ExpandableIconProps {
   sectionExpanded?: boolean;
@@ -11,32 +12,25 @@ interface ExpandableSectionProps {
   expanded?: boolean;
 }
 
-type ExpandableFiltersProps = {
-  // genres, ratings, languages, searchMovies
-  genres: {
-    id: number;
-    name: string;
-  }[];
-  ratings: {
-    id: number;
-    name: number;
-  }[];
-  languages: {
-    id: string;
-    name: string;
-  }[];
-  searchMovies: (keyword: string | undefined, year: number | undefined) => void;
-};
 
-export default function ExpandableFilters({
-  genres,
-  ratings,
-  languages,
-  searchMovies,
-}: Readonly<ExpandableFiltersProps>) {
+export default function ExpandableFilters() {
   const [showGenres, setShowGenres] = useState<boolean>(true);
   const [showMinVote, setShowMinVote] = useState<boolean>(false);
   const [showLanguage, setShowLanguage] = useState<boolean>(false);
+
+  const {
+    genreOptions,
+    languageOptions,
+    ratingOptions,
+    totalCount,
+    results,
+    modalOpen,
+    modalErrors,
+    setModalOpen,
+    setModalErrors,
+    searchMovies,
+    initialLoad,
+  } = useMovieStore((state: any) => state);
 
   return (
     <>
@@ -50,7 +44,7 @@ export default function ExpandableFilters({
         <SectionLabel>Select genre(s)</SectionLabel>
       </SectionHeader>
       <ExpandableSection expanded={showGenres} id="genres-section">
-        {genres.map((genre, index) => {
+        {genreOptions.map((genre: {name:string, id:number}, index: number) => {
           return (
             <div key={index}>
               <Checkbox label={genre.name} id={genre.id} />
@@ -69,7 +63,7 @@ export default function ExpandableFilters({
         <SectionLabel>Select min. vote</SectionLabel>
       </SectionHeader>
       <ExpandableSection expanded={showMinVote} id="min-vote-section">
-        {ratings.map((rating, index) => {
+        {ratingOptions.map((rating: {name: number, id: number}, index: number) => {
           return (
             <div key={index}>
               <Checkbox label={rating.name.toString()} id={rating.id} />
@@ -88,7 +82,7 @@ export default function ExpandableFilters({
         <SectionLabel>Select language</SectionLabel>
       </SectionHeader>
       <ExpandableSection expanded={showLanguage} id="language-section">
-        {languages.map((language, index) => {
+        {languageOptions.map((language: {name:string, id: string}, index: number) => {
           return (
             <div key={index}>
               <Checkbox label={language.name} id={language.id} />

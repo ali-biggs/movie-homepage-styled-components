@@ -2,20 +2,17 @@ import React from "react";
 import styled from "styled-components";
 
 import MovieItem from "../movieitem";
+import { useMovieStore } from "../../store";
 
-type MovieListProps = {
-  movies: [];
-  genres: [];
-};
-
-export default function MovieList({ movies, genres }: Readonly<MovieListProps>) {
-  const testArray = movies.slice(0, 3);
+export default function MovieList() {
+  const { results } = useMovieStore((state: any) => state);
+  const testArray = results.slice(0, 3);
   return (
     <MoviesWrapper role="list" aria-label="Movie list">
-      {testArray.map((movie, index) => {
+      {testArray.map((movie: any, index: number) => {
         return (
           <MovieContainer key={index} role="listitem">
-            <MovieItem movie={movie} genreList={genres} />
+            <MovieItem movie={movie} />
           </MovieContainer>
         );
       })}

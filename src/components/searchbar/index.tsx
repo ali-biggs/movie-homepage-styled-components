@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import styled, { css } from "styled-components";
 import { media } from "../../utils/mediaBreakPoints";
 import { useMediaQuery } from "../../utils/useMediaQuery";
@@ -9,6 +9,7 @@ import * as colors from "../../colors";
 import SearchIcon from "../../images/search-icon-yellow.png";
 import CalendarIcon from "../../images/year-icon.png";
 import FilterIcon from "../../images/filter-icon.png";
+import { useMovieStore } from "../../store";
 
 interface KeySearchIconProps {
   magnifyingGlass?: boolean;
@@ -16,18 +17,40 @@ interface KeySearchIconProps {
   filter?: boolean;
 }
 
-type SearchBarProps = {
-  searchMovies: (keyword: string, year: number | undefined) => void;
-};
-
-export default function SearchBar({ searchMovies }: Readonly<SearchBarProps>) {
+export default function SearchBar() {
   const [keyWord, setKeyWord] = useState<string>("");
   const [releaseYear, setReleaseYear] = useState<string | undefined>("");
+  const { setModalOpen, setModalErrors, searchMovies } = useMovieStore(
+    (state: any) => state
+  );
   const isMobile: boolean = useMediaQuery("(max-width: 480px)");
 
+  // Keep track of the request timestamp to manage rate limiting
+  const lastRequestTimeRef = useRef<number>(0);
+
   const handleMovieSearch = useCallback(
-    debounce((keyword: string, year: number | undefined) => {
-      searchMovies(keyword, year);
+    debounce(async (keyword: string, year: number | undefined) => {
+      const now = Date.now();
+      const timeSinceLastRequest = now - lastRequestTimeRef.current;
+
+      // If the time since the last request is less than the minimum allowed interval, wait
+      const MIN_INTERVAL_MS = 1000;
+      if (timeSinceLastRequest < MIN_INTERVAL_MS) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, MIN_INTERVAL_MS - timeSinceLastRequest)
+        );
+      }
+
+      try {
+        await searchMovies(keyword, year);
+        lastRequestTimeRef.current = Date.now(); // Update the last request time
+        setModalErrors(null);
+      } catch (err) {
+        setModalErrors(
+          ["An error occurred while searching. Please try again later."]
+        );
+        setModalOpen(true);
+      }
     }, 300), // 300ms debounce delay
     [searchMovies]
   );
@@ -35,7 +58,10 @@ export default function SearchBar({ searchMovies }: Readonly<SearchBarProps>) {
   const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newKeyword = e.target.value;
     setKeyWord(newKeyword);
-    handleMovieSearch(newKeyword, releaseYear ? parseInt(releaseYear) : undefined);
+    handleMovieSearch(
+      newKeyword,
+      releaseYear ? parseInt(releaseYear) : undefined
+    );
   };
 
   const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {

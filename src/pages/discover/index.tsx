@@ -21,17 +21,15 @@ export default function Discover({
 }: Readonly<DiscoverProps>) {
   const {
     genreOptions,
-    languageOptions,
-    ratingOptions,
     totalCount,
     results,
     modalOpen,
     modalErrors,
     setModalOpen,
     setModalErrors,
-    searchMovies,
     initialLoad,
   } = useMovieStore((state: any) => state);
+  console.log("store", { modalErrors, modalOpen });
   const isMobile = useMediaQuery("(max-width: 480px)");
 
   const handleModalClose = () => {
@@ -61,10 +59,7 @@ export default function Discover({
         <GridContainer>
           <MovieResults>
             <Suspense fallback={<LoadingSpinner />}>
-              <MovieList
-                movies={(results as []) || []}
-                genres={(genreOptions as []) || []}
-              />
+              <MovieList />
             </Suspense>
           </MovieResults>
 
@@ -74,27 +69,17 @@ export default function Discover({
             </TotalCounter>
           )}
           <MovieFilters>
-            <SearchFilters
-              genres={genreOptions}
-              ratings={ratingOptions}
-              languages={languageOptions}
-              searchMovies={(
-                keyword: string | undefined,
-                year: number | undefined
-              ) => searchMovies(keyword, year)}
-            />
+            <SearchFilters />
           </MovieFilters>
         </GridContainer>
       </DiscoverWrapper>
 
-      {modalOpen && (
- 
-          <ErrorModal
-            errors={modalErrors}
-            isOpen={modalOpen}
-            onClose={() => handleModalClose()}
-          />
-       
+      {modalOpen & modalErrors && (
+        <ErrorModal
+          errors={modalErrors}
+          isOpen={modalOpen}
+          onClose={() => handleModalClose()}
+        />
       )}
     </Profiler>
   );

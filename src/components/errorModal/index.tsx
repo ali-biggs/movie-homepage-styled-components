@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import * as colors from "../../colors";
+import { useMovieStore } from "../../store";
 
 type ErrorModalProps = {
   errors: string[];
@@ -14,12 +15,14 @@ export default function ErrorModal({
   onClose,
 }: Readonly<ErrorModalProps>) {
   if (!isOpen) return null;
+  console.log("ErrorModal rendered with", { errors, isOpen });
 
   return (
     <Overlay>
       <ModalWrapper>
         <Title>Errors</Title>
-        {errors.map((error, index) => {
+
+        {errors?.map((error, index) => {
           return (
             <div key={index}>
               <Message>{error}</Message>
@@ -27,7 +30,9 @@ export default function ErrorModal({
           );
         })}
 
-        <CloseButton onClick={onClose} role="close-button">Close</CloseButton>
+        <CloseButton onClick={onClose} role="close-button">
+          Close
+        </CloseButton>
       </ModalWrapper>
     </Overlay>
   );

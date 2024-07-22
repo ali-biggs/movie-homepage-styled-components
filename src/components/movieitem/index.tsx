@@ -5,6 +5,7 @@ import { useMediaQuery } from "../../utils/useMediaQuery";
 import { applyLastLineFade } from "../../utils/lastLineFade";
 import { media } from "../../utils/mediaBreakPoints";
 import { formatUkDate } from "../../utils/formatUkDate";
+import { useMovieStore } from "../../store";
 
 type MovieItemProps = {
   movie: {
@@ -15,20 +16,21 @@ type MovieItemProps = {
     release_date: string;
     genre_ids: number[];
   };
-  genreList: { id: number; name: string }[];
 };
 
 export default function MovieItem({
   movie,
-  genreList,
 }: Readonly<MovieItemProps>) {
+  const {
+    genreOptions,
+  } = useMovieStore((state: any) => state);
   const isMobile: boolean = useMediaQuery("(max-width: 480px)");
   const getGenreLabels = (
     ids: number[],
     genreList: { id: number; name: string }[]
   ): string => {
     const unformattedLabels = ids.map((id: number) => {
-      const genre = genreList.find((genre) => genre.id === id);
+      const genre = genreOptions.find((genre: { id: number; name: string }) => genre.id === id);
       return genre ? genre.name : "Unknown";
     });
     const formattedLabels = unformattedLabels.join(" | ");
@@ -59,9 +61,9 @@ export default function MovieItem({
         </MovieHeader>
         <GenreRow>
           <Genre
-            id={`movie-genres-${getGenreLabels(movie.genre_ids, genreList)}`}
+            id={`movie-genres-${getGenreLabels(movie.genre_ids, genreOptions)}`}
           >
-            {getGenreLabels(movie.genre_ids, genreList)}
+            {getGenreLabels(movie.genre_ids, genreOptions)}
           </Genre>
         </GenreRow>
         <DescriptionContainer>

@@ -38,7 +38,7 @@ export const useMovieStore = create((set) => ({
   setKeyword: (keyword: string) => set({ keyword }),
   setYear: (year: number) => set({ year }),
 
-  searchMovies: async (keyword: string, year: number) => {
+  searchMovies: async (keyword: string, year: number): Promise<void> => {
     const searchResults = await getMovieByKeywordAndYear(keyword, year);
     if (searchResults.length > 0) {
       set({ results: searchResults, totalCount: searchResults.length });
