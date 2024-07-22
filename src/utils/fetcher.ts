@@ -58,22 +58,25 @@ export const getMovieByMinVote = async (vote: number) => {
   }
 };
 
+export const getMovieByYear = async () => {
+  const baseUrl = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/discover/movie?sort_by=popularity.desc`;
+}
+
 export const getMovieByKeywordAndYear = async (
-  keyword?: string,
+  keyword: string,
   year?: number
 ) => {
   try {
-    const baseUrl = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/discover/movie?sort_by=popularity.desc`;
-    const keyWordParam = keyword ? `&with_keywords=${keyword}` : "";
-    const yearParam = year ? `&year=${year}` : undefined;
-    const url = `${baseUrl}${yearParam}${keyWordParam}`;
+    const baseUrl = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/search/movie?query=${keyword}&include_adult=false&language=en-US&page=1`;
+    const yearParam = year ? `&primary_release_year=${year}` : undefined;
+    const url = `${baseUrl}${yearParam}`;
     const response = await axios.get(url, {
       headers: {
         accept: "application/json",
         Authorization: `Bearer ${process.env.REACT_APP_TMDB_ACCESS_TOKEN}`,
       },
     });
-    console.log("response", response.data.results)
+    console.log("movie search response", response.data.results)
     return response.data.results;
   } catch (error) {
     console.log("Error retreiving by keyword/year: ", error);

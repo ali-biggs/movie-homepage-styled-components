@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import * as colors from "../../colors";
+import Discover from "../../pages/discover";
 
 type ErrorModalProps = {
   errors: string[];
@@ -19,8 +20,12 @@ export default function ErrorModal({
     <Overlay>
       <ModalWrapper>
         <Title>Errors</Title>
-        {errors.map((error) => {
-          return <Message>{error}</Message>;
+        {errors.map((error, index) => {
+          return (
+            <div key={index}>
+              <Message>{error}</Message>
+            </div>
+          );
         })}
 
         <CloseButton onClick={onClose}>Close</CloseButton>

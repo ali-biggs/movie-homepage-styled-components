@@ -49,7 +49,7 @@ export default function Discover({ toggleNavBar, isOpen }: Readonly<DiscoverProp
   const isMobile = useMediaQuery("(max-width: 480px)");
 
   const searchMovies = async (
-    keyword: string | undefined,
+    keyword: string ,
     year: number | undefined
   ) => {
     // Write a function to trigger the API request and load the search results based on the keyword and year given as parameters
@@ -143,7 +143,7 @@ export default function Discover({ toggleNavBar, isOpen }: Readonly<DiscoverProp
               ratings={ratingOptions}
               languages={languageOptions}
               searchMovies={(
-                keyword: string | undefined,
+                keyword: string ,
                 year: number | undefined
               ) => searchMovies(keyword, year)}
             />

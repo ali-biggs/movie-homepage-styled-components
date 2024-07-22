@@ -15,11 +15,11 @@ interface KeySearchIconProps {
 }
 
 type SearchBarProps = {
-  searchMovies: (keyword: string | undefined, year: number | undefined) => void;
+  searchMovies: (keyword: string, year: number | undefined) => void;
 };
 
 export default function SearchBar({ searchMovies }: Readonly<SearchBarProps>) {
-  const [keyWord, setKeyWord] = useState<string | undefined>("");
+  const [keyWord, setKeyWord] = useState<string>("");
   const [releaseYear, setReleaseYear] = useState<string | undefined>("");
   const isMobile: boolean = useMediaQuery("(max-width: 480px)");
 
@@ -31,6 +31,12 @@ export default function SearchBar({ searchMovies }: Readonly<SearchBarProps>) {
     searchMovies(keyWord, year);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleMovieSearch();
+    }
+  };
+
   return (
     <>
       <MobileSearchWrapper>
@@ -38,7 +44,7 @@ export default function SearchBar({ searchMovies }: Readonly<SearchBarProps>) {
           <KeySearchIcon magnifyingGlass />
           <KeyWordInput
             onBlur={handleMovieSearch}
-            onKeyDown={handleMovieSearch}
+            onKeyDown={handleKeyDown}
             onChange={(e) => setKeyWord(e.target.value)}
             aria-label="Search for movie using key word"
           />
@@ -56,7 +62,7 @@ export default function SearchBar({ searchMovies }: Readonly<SearchBarProps>) {
           <KeySearchIcon calendar />
           <YearInput
             onBlur={handleMovieSearch}
-            onKeyDown={handleMovieSearch}
+            onKeyDown={handleKeyDown}
             onChange={(e) => setReleaseYear(e.target.value)}
             aria-label="Search for movie using year"
           />
