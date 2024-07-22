@@ -211,7 +211,7 @@ describe("API Calls", () => {
         ],
       };
 
-      const url = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/search/search/movie?query=${keyword}&primary_release_year=${year}`;
+      const url = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/search/search/movie?query=${keyword}&include_adult=false&language=en-US&page=1&primary_release_year=${year}`;
 
       mock.onGet(url).reply(200, data);
 
@@ -232,7 +232,7 @@ describe("API Calls", () => {
         ],
       };
 
-      const url = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/search/movie?query=${keyword}`;
+      const url = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/search/movie?query=${keyword}&include_adult=false&language=en-US&page=1`;
 
       mock.onGet(url).reply(200, data);
 

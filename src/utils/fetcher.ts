@@ -65,7 +65,7 @@ export const getMovieByKeywordAndYear = async (
 ) => {
   if (keyword || (keyword && year)) {
     try {
-      const baseUrl = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/search/movie?query=${keyword}`;
+      const baseUrl = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/search/movie?query=${keyword}&include_adult=false&language=en-US&page=1`;
       const yearParam = year ? `&primary_release_year=${year}` : undefined;
       const url = `${baseUrl}${yearParam}`;
       const response = await axios.get(url, {
