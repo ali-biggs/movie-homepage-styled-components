@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
+import { useMovieStore } from "./store";
 import Discover from "./pages/discover";
 import SideNavBar from "./components/sidenavbar";
 import { media } from "./utils/mediaBreakPoints";
@@ -9,6 +10,12 @@ import "./css/App.css";
 export default function App(props: any) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const toggleNavBar = () => setIsOpen(!isOpen);
+
+  const initialLoad = useMovieStore((state: any) => state.initialLoad);
+
+  useEffect(() => {
+    initialLoad();
+  }, [initialLoad]);
 
   return (
     <Router>

@@ -1,102 +1,37 @@
-import React, { useEffect, useState, Suspense, Profiler } from "react";
+import React, { Suspense, Profiler } from "react";
 import styled from "styled-components";
 import SearchFilters from "../../components/searchfilter";
 import MovieList from "../../components/movielist";
 import BurgerMenuIcon from "../../components/burgerMenuIcon";
-import {
-  getLanguageOptions,
-  getGenreOptions,
-  getMovieByKeywordAndYear,
-  getPopularMovies,
-  getTotalMovieCount,
-} from "../../utils/fetcher";
 import { useMediaQuery } from "../../utils/useMediaQuery";
 import { media } from "../../utils/mediaBreakPoints";
 import { onRender } from "../../utils/onRender";
 import ErrorModal from "../../components/errorModal";
+import { useMovieStore } from "../../store";
 
 type DiscoverProps = {
   toggleNavBar: () => void;
   isOpen: boolean;
 };
 
-export default function Discover({ toggleNavBar, isOpen }: Readonly<DiscoverProps>) {
-  // You don't need to keep the current structure of this state object. Feel free to restructure it as needed.
-  const [state, setState] = useState({
-    keyword: "",
-    year: 0,
-    results: [],
-    movieDetails: null,
-    totalCount: 0,
-    genreOptions: [],
-    ratingOptions: [
-      { id: 7.5, name: 7.5 },
-      { id: 8, name: 8 },
-      { id: 8.5, name: 8.5 },
-      { id: 9, name: 9 },
-      { id: 9.5, name: 9.5 },
-      { id: 10, name: 10 },
-    ],
-    languageOptions: [
-      { id: "GR", name: "Greek" },
-      { id: "EN", name: "English" },
-      { id: "RU", name: "Russian" },
-      { id: "PO", name: "Polish" },
-    ],
-  });
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [modalErrors, setModalErrors] = useState<string[]>([]);
-  const isMobile = useMediaQuery("(max-width: 480px)");
-
-  const searchMovies = async (
-    keyword: string | undefined,
-    year: number | undefined
-  ) => {
-    const searchResults = await getMovieByKeywordAndYear(keyword, year);
-    if (searchResults.length > 0) {
-      setState((prevState) => ({
-        ...prevState,
-        results: searchResults,
-        totalCount: searchResults.length,
-      }));
-    } else {
-      setModalErrors(["There are no matches for this search"]);
-      setModalOpen(true);
-    }
-  };
-
+export default function Discover({
+  toggleNavBar,
+  isOpen,
+}: Readonly<DiscoverProps>) {
   const {
     genreOptions,
     languageOptions,
     ratingOptions,
     totalCount,
     results,
-    movieDetails,
-  } = state;
-
-  // Write a function to preload the popular movies when page loads & get the movie genres
-  const initialLoad = async () => {
-    try {
-      const popularMovies = await getPopularMovies();
-      const movieGenres = await getGenreOptions();
-      const totalCount = await getTotalMovieCount();
-      const languageOptions = await getLanguageOptions();
-
-      setState((prevState) => ({
-        ...prevState,
-        results: popularMovies,
-        genreOptions: movieGenres,
-        totalCount: totalCount,
-        languageOptions: languageOptions,
-      }));
-    } catch (error) {
-      console.log("Error fetching initial data: ", error);
-    }
-  };
-
-  useEffect(() => {
-    initialLoad();
-  }, []);
+    modalOpen,
+    modalErrors,
+    setModalOpen,
+    setModalErrors,
+    searchMovies,
+    initialLoad,
+  } = useMovieStore((state: any) => state);
+  const isMobile = useMediaQuery("(max-width: 480px)");
 
   const handleModalClose = () => {
     setModalErrors([]);
