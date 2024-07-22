@@ -25,7 +25,7 @@ type ExpandableFiltersProps = {
     id: string;
     name: string;
   }[];
-  searchMovies: (keyword: string , year: number | undefined) => void;
+  searchMovies: (keyword: string | undefined, year: number | undefined) => void;
 };
 
 export default function ExpandableFilters({

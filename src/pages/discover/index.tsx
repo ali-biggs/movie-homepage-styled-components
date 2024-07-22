@@ -49,10 +49,9 @@ export default function Discover({ toggleNavBar, isOpen }: Readonly<DiscoverProp
   const isMobile = useMediaQuery("(max-width: 480px)");
 
   const searchMovies = async (
-    keyword: string ,
+    keyword: string | undefined,
     year: number | undefined
   ) => {
-    // Write a function to trigger the API request and load the search results based on the keyword and year given as parameters
     const searchResults = await getMovieByKeywordAndYear(keyword, year);
     if (searchResults.length > 0) {
       setState((prevState) => ({
@@ -61,7 +60,7 @@ export default function Discover({ toggleNavBar, isOpen }: Readonly<DiscoverProp
         totalCount: searchResults.length,
       }));
     } else {
-      setModalErrors(["There are no matches for this year"]);
+      setModalErrors(["There are no matches for this search"]);
       setModalOpen(true);
     }
   };
@@ -143,7 +142,7 @@ export default function Discover({ toggleNavBar, isOpen }: Readonly<DiscoverProp
               ratings={ratingOptions}
               languages={languageOptions}
               searchMovies={(
-                keyword: string ,
+                keyword: string | undefined,
                 year: number | undefined
               ) => searchMovies(keyword, year)}
             />

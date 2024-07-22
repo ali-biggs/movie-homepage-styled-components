@@ -58,29 +58,59 @@ export const getMovieByMinVote = async (vote: number) => {
   }
 };
 
-export const getMovieByYear = async () => {
-  const baseUrl = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/discover/movie?sort_by=popularity.desc`;
-}
-
 export const getMovieByKeywordAndYear = async (
-  keyword: string,
+  keyword?: string,
   year?: number
 ) => {
-  try {
-    const baseUrl = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/search/movie?query=${keyword}&include_adult=false&language=en-US&page=1`;
-    const yearParam = year ? `&primary_release_year=${year}` : undefined;
-    const url = `${baseUrl}${yearParam}`;
-    const response = await axios.get(url, {
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${process.env.REACT_APP_TMDB_ACCESS_TOKEN}`,
-      },
-    });
-    console.log("movie search response", response.data.results)
-    return response.data.results;
-  } catch (error) {
-    console.log("Error retreiving by keyword/year: ", error);
-    return error;
+  if (keyword || (keyword && year)) {
+    try {
+      const baseUrl = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/search/movie?query=${keyword}&include_adult=false&language=en-US&page=1`;
+      const yearParam = year ? `&primary_release_year=${year}` : undefined;
+      const url = `${baseUrl}${yearParam}`;
+      const response = await axios.get(url, {
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${process.env.REACT_APP_TMDB_ACCESS_TOKEN}`,
+        },
+      });
+      console.log("movie search response", response.data.results);
+      return response.data.results;
+    } catch (error) {
+      console.log("Error retreiving by keyword or keyword+year: ", error);
+      return error;
+    }
+  } else if (year) {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_TMDB_PUBLIC_URL}/discover/movie?sort_by=popularity.desc&primary_release_year=${year}`,
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_TMDB_ACCESS_TOKEN}`,
+          },
+        }
+      );
+      return response.data.results;
+    } catch (error) {
+      console.log("Error retreiving movie list: ", error);
+      return error;
+    }
+  } else {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_TMDB_PUBLIC_URL}/discover/movie?sort_by=popularity.desc`,
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_TMDB_ACCESS_TOKEN}`,
+          },
+        }
+      );
+      return response.data.results;
+    } catch (error) {
+      console.log("Error retreiving movie list: ", error);
+      return error;
+    }
   }
 };
 
