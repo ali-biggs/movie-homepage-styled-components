@@ -5,7 +5,7 @@ import * as colors from "../../colors";
 import Checkbox from "../checkbox";
 
 interface ExpandableIconProps {
-  expanded?: boolean;
+  sectionExpanded?: boolean;
 }
 interface ExpandableSectionProps {
   expanded?: boolean;
@@ -42,7 +42,7 @@ export default function ExpandableFilters({
     <>
       <SectionHeader>
         <ExpandableIcon
-          expanded={showGenres}
+          sectionExpanded={showGenres}
           onClick={() => setShowGenres((prev) => !prev)}
           aria-expanded={showGenres}
           aria-controls="genres-section"
@@ -61,7 +61,7 @@ export default function ExpandableFilters({
 
       <SectionHeader>
         <ExpandableIcon
-          expanded={showMinVote}
+          sectionExpanded={showMinVote}
           onClick={() => setShowMinVote((prev) => !prev)}
           aria-expanded={showMinVote}
           aria-controls="min-vote-section"
@@ -80,7 +80,7 @@ export default function ExpandableFilters({
 
       <SectionHeader>
         <ExpandableIcon
-          expanded={showLanguage}
+          sectionExpanded={showLanguage}
           onClick={() => setShowLanguage((prev) => !prev)}
           aria-expanded={showLanguage}
           aria-controls="language-section"
@@ -127,7 +127,7 @@ const ExpandableIcon = styled.button<ExpandableIconProps>`
   padding: 0;
 
   ${(props) =>
-    !props.expanded
+    !props.sectionExpanded
       ? css`
           &::before,
           &::after {

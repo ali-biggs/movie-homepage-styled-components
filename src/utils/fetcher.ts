@@ -34,6 +34,7 @@ export const getLanguageOptions = async () => {
         name: item.english_name,
       }))
       .sort((a: any, b: any) => a.name.localeCompare(b.name));
+
     return formattedLanguageOptions;
   } catch (error) {
     console.log("Error retreiving languages: ", error);
@@ -64,7 +65,7 @@ export const getMovieByKeywordAndYear = async (
 ) => {
   if (keyword || (keyword && year)) {
     try {
-      const baseUrl = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/search/movie?query=${keyword}&include_adult=false&language=en-US&page=1`;
+      const baseUrl = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/search/movie?query=${keyword}`;
       const yearParam = year ? `&primary_release_year=${year}` : undefined;
       const url = `${baseUrl}${yearParam}`;
       const response = await axios.get(url, {
@@ -73,7 +74,6 @@ export const getMovieByKeywordAndYear = async (
           Authorization: `Bearer ${process.env.REACT_APP_TMDB_ACCESS_TOKEN}`,
         },
       });
-      console.log("movie search response", response.data.results);
       return response.data.results;
     } catch (error) {
       console.log("Error retreiving by keyword or keyword+year: ", error);

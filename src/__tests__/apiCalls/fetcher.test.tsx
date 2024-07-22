@@ -196,55 +196,27 @@ describe("API Calls", () => {
 
   //getMovieByKeywordAndYear tests
   describe("getMovieByKeywordAndYear", () => {
-    const year = "1997";
-    const keyword = "Monster";
-    it("Should return movie by release year", async () => {
+    const keyword = "Bad";
+    const year = 1977;
+
+    it("Should return movies by keyword and year", async () => {
       const data = {
         results: [
+          { id: 1, title: "Bad", release_date: "1977-05-04" },
           {
-            adult: false,
-            backdrop_path: "/vbtEoDHhwwsX34GbzhKezsleTPN.jpg",
-            genre_ids: [28, 12, 18],
-            id: 664,
-            original_language: "en",
-            original_title: "Twister",
-            overview:
-              "An unprecedented series of violent tornadoes is sweeping across Oklahoma. Tornado chasers, headed by Dr. Jo Harding, attempt to release a groundbreaking device that will allow them to track them and create a more advanced warning system. They are joined by Jo's soon to be ex-husband Bill, a former tornado chaser himself, and his girlfriend Melissa.",
-            popularity: 331.286,
-            poster_path: "/fZ0Y2qSDKQJolrQhIDpTwx3GlYB.jpg",
-            release_date: "1996-05-10",
-            title: "Twister",
-            video: false,
-            vote_average: 6.495,
-            vote_count: 3189,
-          },
-          {
-            adult: false,
-            backdrop_path: "/sDH1LkdFOkQmTJaF1sIIniQyFOk.jpg",
-            genre_ids: [18, 10749],
-            id: 597,
-            original_language: "en",
-            original_title: "Titanic",
-            overview:
-              "101-year-old Rose DeWitt Bukater tells the story of her life aboard the Titanic, 84 years later. A young Rose boards the ship with her mother and fiancé. Meanwhile, Jack Dawson and Fabrizio De Rossi win third-class tickets aboard the ship. Rose tells the whole story from Titanic's departure through to its death—on its first and last voyage—on April 15, 1912.",
-            popularity: 229.961,
-            poster_path: "/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg",
-            release_date: "1997-11-18",
-            title: "Titanic",
-            video: false,
-            vote_average: 7.9,
-            vote_count: 24852,
+            id: 2,
+            title: "Badye, the Storyteller",
+            release_date: "1977-01-01",
           },
         ],
       };
-      mock
-        .onGet(
-          `${process.env.REACT_APP_TMDB_PUBLIC_URL}/${process.env.REACT_APP_TMDB_PUBLIC_URL}/discover/movie?sort_by=popularity.desc&year=${year}`
-        )
-        .reply(200, data);
+
+      const url = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/search/search/movie?query=${keyword}&primary_release_year=${year}`;
+
+      mock.onGet(url).reply(200, data);
 
       try {
-        const movies = await getGenreOptions();
+        const movies = await getMovieByKeywordAndYear(keyword, year);
         console.log("Received movies:", movies);
         expect(movies).toEqual(data.results);
       } catch (error) {
@@ -252,53 +224,20 @@ describe("API Calls", () => {
       }
     });
 
-    it("Should return movie by keyword", async () => {
+    it("Should return movies by keyword only", async () => {
       const data = {
         results: [
-          {
-            adult: false,
-            backdrop_path: "/vbtEoDHhwwsX34GbzhKezsleTPN.jpg",
-            genre_ids: [28, 12, 18],
-            id: 664,
-            original_language: "en",
-            original_title: "Twister",
-            overview:
-              "An unprecedented series of violent tornadoes is sweeping across Oklahoma. Tornado chasers, headed by Dr. Jo Harding, attempt to release a groundbreaking device that will allow them to track them and create a more advanced warning system. They are joined by Jo's soon to be ex-husband Bill, a former tornado chaser himself, and his girlfriend Melissa.",
-            popularity: 331.286,
-            poster_path: "/fZ0Y2qSDKQJolrQhIDpTwx3GlYB.jpg",
-            release_date: "1996-05-10",
-            title: "Twister",
-            video: false,
-            vote_average: 6.495,
-            vote_count: 3189,
-          },
-          {
-            adult: false,
-            backdrop_path: "/sDH1LkdFOkQmTJaF1sIIniQyFOk.jpg",
-            genre_ids: [18, 10749],
-            id: 597,
-            original_language: "en",
-            original_title: "Titanic",
-            overview:
-              "101-year-old Rose DeWitt Bukater tells the story of her life aboard the Titanic, 84 years later. A young Rose boards the ship with her mother and fiancé. Meanwhile, Jack Dawson and Fabrizio De Rossi win third-class tickets aboard the ship. Rose tells the whole story from Titanic's departure through to its death—on its first and last voyage—on April 15, 1912.",
-            popularity: 229.961,
-            poster_path: "/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg",
-            release_date: "1997-11-18",
-            title: "Titanic",
-            video: false,
-            vote_average: 7.9,
-            vote_count: 24852,
-          },
+          { id: 3, title: "Bad", release_date: "1987-08-31" },
+          { id: 4, title: "Bad Boys: Ride or Die", release_date: "2024-06-05" },
         ],
       };
-      mock
-        .onGet(
-          `${process.env.REACT_APP_TMDB_PUBLIC_URL}/${process.env.REACT_APP_TMDB_PUBLIC_URL}/discover/movie?sort_by=popularity.desc&with_keywords=${keyword}`
-        )
-        .reply(200, data);
+
+      const url = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/search/movie?query=${keyword}`;
+
+      mock.onGet(url).reply(200, data);
 
       try {
-        const movies = await getGenreOptions();
+        const movies = await getMovieByKeywordAndYear(keyword);
         console.log("Received movies:", movies);
         expect(movies).toEqual(data.results);
       } catch (error) {
@@ -306,15 +245,85 @@ describe("API Calls", () => {
       }
     });
 
-    it("should handle errors", async () => {
-      mock
-        .onGet(
-          `${process.env.REACT_APP_TMDB_PUBLIC_URL}/discover/movie?sort_by=popularity.desc&year=${year}&with_keywords=${keyword}`
-        )
-        .reply(400, "Network Error");
+    it("Should return movies by year only", async () => {
+      const data = {
+        results: [
+          { id: 5, title: "Star Wars", release_date: "1977-05-25" },
+          { id: 6, title: "Emmanuelle 3", release_date: "1977-10-14" },
+        ],
+      };
+
+      const url = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/discover/movie?sort_by=popularity.desc&primary_release_year=${year}`;
+
+      mock.onGet(url).reply(200, data);
 
       try {
-        await expect(getGenreOptions()).rejects.toThrow("Network Error");
+        const movies = await getMovieByKeywordAndYear(undefined, year);
+        console.log("Received movies:", movies);
+        expect(movies).toEqual(data.results);
+      } catch (error) {
+        console.error("Test failed with error:", error);
+      }
+    });
+
+    it("Should return popular movies when no keyword or year is provided", async () => {
+      const data = {
+        results: [
+          { id: 7, title: "Movie G", release_date: "2022-11-01" },
+          { id: 8, title: "Movie H", release_date: "2022-06-01" },
+        ],
+      };
+
+      const url = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/discover/movie?sort_by=popularity.desc`;
+
+      mock.onGet(url).reply(200, data);
+
+      try {
+        const movies = await getMovieByKeywordAndYear();
+        console.log("Received movies:", movies);
+        expect(movies).toEqual(data.results);
+      } catch (error) {
+        console.error("Test failed with error:", error);
+      }
+    });
+
+    it("should handle errors for keyword and year", async () => {
+      const url = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/search/movie?query=${keyword}&include_adult=false&language=en-US&page=1&primary_release_year=${year}`;
+
+      mock.onGet(url).reply(400, "Network Error");
+
+      try {
+        await expect(getMovieByKeywordAndYear(keyword, year)).rejects.toThrow(
+          "Network Error"
+        );
+      } catch (error) {
+        console.error("Test failed with error:", error);
+      }
+    });
+
+    it("should handle errors for year only", async () => {
+      const url = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/discover/movie?sort_by=popularity.desc&primary_release_year=${year}`;
+
+      mock.onGet(url).reply(400, "Network Error");
+
+      try {
+        await expect(getMovieByKeywordAndYear(undefined, year)).rejects.toThrow(
+          "Network Error"
+        );
+      } catch (error) {
+        console.error("Test failed with error:", error);
+      }
+    });
+
+    it("should handle errors for no keyword or year", async () => {
+      const url = `${process.env.REACT_APP_TMDB_PUBLIC_URL}/discover/movie?sort_by=popularity.desc`;
+
+      mock.onGet(url).reply(400, "Network Error");
+
+      try {
+        await expect(getMovieByKeywordAndYear()).rejects.toThrow(
+          "Network Error"
+        );
       } catch (error) {
         console.error("Test failed with error:", error);
       }
