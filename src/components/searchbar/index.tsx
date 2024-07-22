@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import styled, { css } from "styled-components";
 import { media } from "../../utils/mediaBreakPoints";
 import { useMediaQuery } from "../../utils/useMediaQuery";
+import debounce from "debounce";
+// import debounce from 'lodash/debounce';
 
 import * as colors from "../../colors";
 import SearchIcon from "../../images/search-icon-yellow.png";
@@ -23,18 +25,23 @@ export default function SearchBar({ searchMovies }: Readonly<SearchBarProps>) {
   const [releaseYear, setReleaseYear] = useState<string | undefined>("");
   const isMobile: boolean = useMediaQuery("(max-width: 480px)");
 
-  const handleMovieSearch = async () => {
-    let year;
-    if (releaseYear) {
-      year = parseInt(releaseYear);
-    }
-    searchMovies(keyWord, year);
+  const handleMovieSearch = useCallback(
+    debounce((keyword: string, year: number | undefined) => {
+      searchMovies(keyword, year);
+    }, 300), // 300ms debounce delay
+    [searchMovies]
+  );
+
+  const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newKeyword = e.target.value;
+    setKeyWord(newKeyword);
+    handleMovieSearch(newKeyword, releaseYear ? parseInt(releaseYear) : undefined);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      handleMovieSearch();
-    }
+  const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newYear = e.target.value;
+    setReleaseYear(newYear);
+    handleMovieSearch(keyWord, newYear ? parseInt(newYear) : undefined);
   };
 
   return (
@@ -43,10 +50,9 @@ export default function SearchBar({ searchMovies }: Readonly<SearchBarProps>) {
         <SearchWrapper>
           <KeySearchIcon magnifyingGlass />
           <KeyWordInput
-            onBlur={handleMovieSearch}
-            onKeyDown={handleKeyDown}
-            onChange={(e) => setKeyWord(e.target.value)}
-            aria-label="Search for movie using key word"
+            onChange={handleKeywordChange}
+            aria-label="Search for movie using keyword"
+            value={keyWord}
           />
         </SearchWrapper>
         {isMobile && (
@@ -61,10 +67,9 @@ export default function SearchBar({ searchMovies }: Readonly<SearchBarProps>) {
         <SearchWrapper aria-hidden={!isMobile}>
           <KeySearchIcon calendar />
           <YearInput
-            onBlur={handleMovieSearch}
-            onKeyDown={handleKeyDown}
-            onChange={(e) => setReleaseYear(e.target.value)}
+            onChange={handleYearChange}
             aria-label="Search for movie using year"
+            value={releaseYear || ""}
           />
         </SearchWrapper>
       )}
@@ -169,6 +174,20 @@ const KeySearchIcon = styled.div<KeySearchIconProps>`
         background-repeat: no-repeat;
         width: 20px;
         height: 20px;
+      }
+    `}
+
+  ${(props) =>
+    props.filter &&
+    css`
+      &::before {
+        content: "";
+        display: inline-block;
+        background-image: url(${FilterIcon});
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 30px;
+        height: 30px;
       }
     `}
 `;

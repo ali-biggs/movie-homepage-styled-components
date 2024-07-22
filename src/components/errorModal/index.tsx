@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import * as colors from "../../colors";
-import Discover from "../../pages/discover";
 
 type ErrorModalProps = {
   errors: string[];

@@ -1,13 +1,11 @@
 import React, { useEffect, useState, Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
+import Discover from "./pages/discover";
 import { useMovieStore } from "./store";
 import SideNavBar from "./components/sidenavbar";
 import { media } from "./utils/mediaBreakPoints";
 import "./css/App.css";
-import LoadingSpinner from "./components/loadingSpinner";
-
-const Discover = React.lazy(() => import("./pages/discover"));
 
 export default function App(props: any) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -24,20 +22,18 @@ export default function App(props: any) {
       <PageContainer>
         <SideNavBar isOpen={isOpen} toggleNavBar={toggleNavBar} />
         <ContentWrapper>
-          <Suspense fallback={<LoadingSpinner />}>
-            <Routes>
-              <Route
-                path="/discover"
-                element={
-                  <Discover
-                    {...props}
-                    isOpen={isOpen}
-                    toggleNavBar={toggleNavBar}
-                  />
-                }
-              />
-            </Routes>
-          </Suspense>
+          <Routes>
+            <Route
+              path="/discover"
+              element={
+                <Discover
+                  {...props}
+                  isOpen={isOpen}
+                  toggleNavBar={toggleNavBar}
+                />
+              }
+            />
+          </Routes>
         </ContentWrapper>
       </PageContainer>
     </Router>
