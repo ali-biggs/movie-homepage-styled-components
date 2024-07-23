@@ -14,6 +14,7 @@ export const getGenreOptions = async (languageCode: string = "en") => {
     return response.data.genres;
   } catch (error) {
     console.log("Error retreiving genres: ", error);
+    return error;
   }
 };
 
@@ -38,6 +39,7 @@ export const getLanguageOptions = async () => {
     return formattedLanguageOptions;
   } catch (error) {
     console.log("Error retreiving languages: ", error);
+    return error;
   }
 };
 

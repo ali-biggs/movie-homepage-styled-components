@@ -12,83 +12,100 @@ interface ExpandableSectionProps {
   expanded?: boolean;
 }
 
-
 export default function ExpandableFilters() {
   const [showGenres, setShowGenres] = useState<boolean>(true);
   const [showMinVote, setShowMinVote] = useState<boolean>(false);
   const [showLanguage, setShowLanguage] = useState<boolean>(false);
 
-  const {
-    genreOptions,
-    languageOptions,
-    ratingOptions,
-    totalCount,
-    results,
-    modalOpen,
-    modalErrors,
-    setModalOpen,
-    setModalErrors,
-    searchMovies,
-    initialLoad,
-  } = useMovieStore((state: any) => state);
+  const { genreOptions, languageOptions, ratingOptions } = useMovieStore(
+    (state: any) => state
+  );
 
   return (
     <>
       <SectionHeader>
-        <ExpandableIcon
-          sectionExpanded={showGenres}
-          onClick={() => setShowGenres((prev) => !prev)}
-          aria-expanded={showGenres}
-          aria-controls="genres-section"
-        />
-        <SectionLabel>Select genre(s)</SectionLabel>
+        {genreOptions ? (
+          <>
+            <ExpandableIcon
+              sectionExpanded={showGenres}
+              onClick={() => setShowGenres((prev) => !prev)}
+              aria-expanded={showGenres}
+              aria-controls="genres-section"
+            />
+            <SectionLabel>Select genre(s)</SectionLabel>
+          </>
+        ) : (
+          <SectionLabel>There was an error retrieving genres</SectionLabel>
+        )}
       </SectionHeader>
       <ExpandableSection expanded={showGenres} id="genres-section">
-        {genreOptions.map((genre: {name:string, id:number}, index: number) => {
-          return (
-            <div key={index}>
-              <Checkbox label={genre.name} id={genre.id} />
-            </div>
-          );
-        })}
+        {genreOptions.map(
+          (genre: { name: string; id: number }, index: number) => {
+            return (
+              <div key={index}>
+                <Checkbox label={genre.name} id={genre.id} />
+              </div>
+            );
+          }
+        )}
       </ExpandableSection>
 
       <SectionHeader>
-        <ExpandableIcon
-          sectionExpanded={showMinVote}
-          onClick={() => setShowMinVote((prev) => !prev)}
-          aria-expanded={showMinVote}
-          aria-controls="min-vote-section"
-        />
-        <SectionLabel>Select min. vote</SectionLabel>
+        {ratingOptions ? (
+          <>
+            <ExpandableIcon
+              sectionExpanded={showMinVote}
+              onClick={() => setShowMinVote((prev) => !prev)}
+              aria-expanded={showMinVote}
+              aria-controls="min-vote-section"
+            />
+            <SectionLabel>Select min. vote</SectionLabel>
+          </>
+        ) : (
+          <SectionLabel>
+            There was an error retrieving minimum vote options
+          </SectionLabel>
+        )}
       </SectionHeader>
       <ExpandableSection expanded={showMinVote} id="min-vote-section">
-        {ratingOptions.map((rating: {name: number, id: number}, index: number) => {
-          return (
-            <div key={index}>
-              <Checkbox label={rating.name.toString()} id={rating.id} />
-            </div>
-          );
-        })}
+        {ratingOptions.map(
+          (rating: { name: number; id: number }, index: number) => {
+            return (
+              <div key={index}>
+                <Checkbox label={rating.name.toString()} id={rating.id} />
+              </div>
+            );
+          }
+        )}
       </ExpandableSection>
 
       <SectionHeader>
-        <ExpandableIcon
-          sectionExpanded={showLanguage}
-          onClick={() => setShowLanguage((prev) => !prev)}
-          aria-expanded={showLanguage}
-          aria-controls="language-section"
-        />
-        <SectionLabel>Select language</SectionLabel>
+        {languageOptions ? (
+          <>
+            <ExpandableIcon
+              sectionExpanded={showLanguage}
+              onClick={() => setShowLanguage((prev) => !prev)}
+              aria-expanded={showLanguage}
+              aria-controls="language-section"
+            />
+            <SectionLabel>Select language</SectionLabel>
+          </>
+        ) : (
+          <SectionLabel>
+            There was an error retrieving language options
+          </SectionLabel>
+        )}
       </SectionHeader>
       <ExpandableSection expanded={showLanguage} id="language-section">
-        {languageOptions.map((language: {name:string, id: string}, index: number) => {
-          return (
-            <div key={index}>
-              <Checkbox label={language.name} id={language.id} />
-            </div>
-          );
-        })}
+        {languageOptions.map(
+          (language: { name: string; id: string }, index: number) => {
+            return (
+              <div key={index}>
+                <Checkbox label={language.name} id={language.id} />
+              </div>
+            );
+          }
+        )}
       </ExpandableSection>
     </>
   );
