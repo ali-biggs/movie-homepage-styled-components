@@ -41,18 +41,22 @@ export default function SearchBar() {
     debounce(async (keyword: string, year: number | undefined) => {
       const now = Date.now();
       const timeSinceLastRequest = now - lastRequestTimeRef.current;
-  
+
       if (timeSinceLastRequest < MIN_INTERVAL_MS) {
-        await new Promise((resolve) => setTimeout(resolve, MIN_INTERVAL_MS - timeSinceLastRequest));
+        await new Promise((resolve) =>
+          setTimeout(resolve, MIN_INTERVAL_MS - timeSinceLastRequest)
+        );
       }
-  
+
       try {
         await searchMovies(keyword, year);
         lastRequestTimeRef.current = Date.now(); // Update the last request time
       } catch (error: any) {
         if (error.response && error.response.status === 429) {
           // If rate limited, wait for the appropriate time (10 seconds) and retry
-          const retryAfter = error.response.headers['retry-after'] ? parseInt(error.response.headers['retry-after'], 10) * 1000 : MIN_INTERVAL_MS;
+          const retryAfter = error.response.headers["retry-after"]
+            ? parseInt(error.response.headers["retry-after"], 10) * 1000
+            : MIN_INTERVAL_MS;
           await new Promise((resolve) => setTimeout(resolve, retryAfter));
           await searchMovies(keyword, year); // Retry the request after the wait time
           lastRequestTimeRef.current = Date.now(); // Update the last request time
@@ -96,14 +100,14 @@ export default function SearchBar() {
         {isMobile && (
           <FilterButton
             aria-label="Filter options"
-            aria-hidden={!isMobile}
-            aria-expanded="false"
+            aria-hidden={isMobile ? false : true}
+            aria-expanded={filtersModalOpen}
             onClick={() => setFiltersModalOpen(true)}
           />
         )}
       </MobileSearchWrapper>
       {!isMobile && (
-        <SearchWrapper aria-hidden={!isMobile}>
+        <SearchWrapper >
           <KeySearchIcon calendar />
           <YearInput
             onChange={handleYearChange}

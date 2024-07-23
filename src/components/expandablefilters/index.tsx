@@ -29,6 +29,9 @@ export default function ExpandableFilters() {
             <ExpandableIcon
               sectionExpanded={showGenres}
               onClick={() => setShowGenres((prev) => !prev)}
+              aria-label={
+                showGenres ? "Collapse genre section" : "Expand genre section"
+              }
               aria-expanded={showGenres}
               aria-controls="genres-section"
             />
@@ -56,6 +59,11 @@ export default function ExpandableFilters() {
             <ExpandableIcon
               sectionExpanded={showMinVote}
               onClick={() => setShowMinVote((prev) => !prev)}
+              aria-label={
+                showMinVote
+                  ? "Collapse min vote section"
+                  : "Expand min vote section"
+              }
               aria-expanded={showMinVote}
               aria-controls="min-vote-section"
             />
@@ -85,6 +93,11 @@ export default function ExpandableFilters() {
             <ExpandableIcon
               sectionExpanded={showLanguage}
               onClick={() => setShowLanguage((prev) => !prev)}
+              aria-label={
+                showLanguage
+                  ? "Collapse language section"
+                  : "Expand language section"
+              }
               aria-expanded={showLanguage}
               aria-controls="language-section"
             />

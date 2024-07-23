@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import * as colors from "../../colors";
 
 type CheckBoxProps = {
   label: string;
@@ -16,12 +17,14 @@ export default function CheckBox({ label, id }: Readonly<CheckBoxProps>) {
   return (
     <CheckboxCont>
       <Input
-        value={id}
+        value={`${id}`}
         checked={checked}
         onChange={handleCheckboxChange}
         aria-checked={checked}
       />
-      <LabelText htmlFor={`${label}`}>{label}</LabelText>
+      <LabelText htmlFor={`${id}`} onClick={handleCheckboxChange}>
+        {label}
+      </LabelText>
     </CheckboxCont>
   );
 }
@@ -35,8 +38,8 @@ const CheckboxCont = styled.span`
 `;
 
 const Input = styled.input.attrs({ type: "checkbox" })`
-  width: 15px;
-  height: 15px;
+  width: 24px;
+  height: 24px;
   position: relative;
   appearance: none;
   background-color: #fff;
@@ -46,22 +49,25 @@ const Input = styled.input.attrs({ type: "checkbox" })`
   cursor: pointer;
 
   &:checked {
-    background-color: #fff;
+    background-color: ${colors.primaryColor};
+    border: 1px solid;
+    border-color:${colors.primaryColor};
   }
 
   &:checked::after {
     content: "";
     position: absolute;
-    top: 1px;
-    left: 4px;
-    width: 4px;
-    height: 8px;
-    border: solid black;
-    border-width: 0 1px 1px 0;
+    top: 2%;
+    left: 25%;
+    width: 10px;
+    height: 16px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
     transform: rotate(45deg);
   }
 `;
 
 const LabelText = styled.label`
   font-weight: 300;
+  cursor: pointer;
 `;
