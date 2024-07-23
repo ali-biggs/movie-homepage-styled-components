@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useRef } from "react";
 import styled, { css } from "styled-components";
+import { AxiosError } from "axios";
 import { useMovieStore } from "../../store";
 import { media } from "../../utils/mediaBreakPoints";
 import { useMediaQuery } from "../../utils/useMediaQuery";
@@ -32,27 +33,35 @@ export default function SearchBar() {
   // Keep track of the request timestamp to manage rate limiting
   const lastRequestTimeRef = useRef<number>(0);
 
+  //TMBD rate limiting values
+  const REQUESTS_PER_SECOND = 4;
+  const MIN_INTERVAL_MS = 1000 / REQUESTS_PER_SECOND;
+
   const handleMovieSearch = useCallback(
     debounce(async (keyword: string, year: number | undefined) => {
       const now = Date.now();
       const timeSinceLastRequest = now - lastRequestTimeRef.current;
-
-      // If the time since the last request is less than the minimum allowed interval, wait
-      const MIN_INTERVAL_MS = 1000;
+  
       if (timeSinceLastRequest < MIN_INTERVAL_MS) {
-        await new Promise((resolve) =>
-          setTimeout(resolve, MIN_INTERVAL_MS - timeSinceLastRequest)
-        );
+        await new Promise((resolve) => setTimeout(resolve, MIN_INTERVAL_MS - timeSinceLastRequest));
       }
-
+  
       try {
         await searchMovies(keyword, year);
         lastRequestTimeRef.current = Date.now(); // Update the last request time
-      } catch (err) {
-        setModalErrors([
-          "An error occurred while searching. Please try again later.",
-        ]);
-        setErrorModalOpen(true);
+      } catch (error: any) {
+        if (error.response && error.response.status === 429) {
+          // If rate limited, wait for the appropriate time (10 seconds) and retry
+          const retryAfter = error.response.headers['retry-after'] ? parseInt(error.response.headers['retry-after'], 10) * 1000 : MIN_INTERVAL_MS;
+          await new Promise((resolve) => setTimeout(resolve, retryAfter));
+          await searchMovies(keyword, year); // Retry the request after the wait time
+          lastRequestTimeRef.current = Date.now(); // Update the last request time
+        } else {
+          setModalErrors([
+            "An error occurred while searching. Please try again later.",
+          ]);
+          setErrorModalOpen(true);
+        }
       }
     }, 300), // 300ms debounce delay
     [searchMovies]

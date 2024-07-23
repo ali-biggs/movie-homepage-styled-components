@@ -31,7 +31,7 @@ Packages & Technologies used in the repo:
 ### Setup guide
 
 1. Clone this repo
-2. `npm i --legacy-peer-deps` to install dependencies. Node v16^ preferable
+2. `npm i` to install dependencies. Node v16^ preferable
 
 ### Submission guide
 
