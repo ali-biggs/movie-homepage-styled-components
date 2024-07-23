@@ -124,8 +124,24 @@ const SectionLabel = styled.div`
 
 const ExpandableSection = styled.div<ExpandableSectionProps>`
   margin-top: 20px;
-  height: ${(props) => (props.expanded ? "100%" : "0px")};
-  overflow: hidden;
+  height: ${(props) => (props.expanded ? "300px" : "0px")};
+  overflow-y: ${(props) => (props.expanded ? "auto" : "hidden")};
+  transition: max-height 0.3s ease-in-out;
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${colors.fontColor};
+    border-radius: 10px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: ${colors.primaryColor};
+  }
 `;
 
 const ExpandableIcon = styled.button<ExpandableIconProps>`
