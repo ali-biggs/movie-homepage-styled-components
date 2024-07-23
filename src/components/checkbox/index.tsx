@@ -17,6 +17,7 @@ export default function CheckBox({ label, id }: Readonly<CheckBoxProps>) {
   return (
     <CheckboxCont>
       <Input
+        id={`${id}`}
         value={`${id}`}
         checked={checked}
         onChange={handleCheckboxChange}
@@ -51,7 +52,7 @@ const Input = styled.input.attrs({ type: "checkbox" })`
   &:checked {
     background-color: ${colors.primaryColor};
     border: 1px solid;
-    border-color:${colors.primaryColor};
+    border-color: ${colors.primaryColor};
   }
 
   &:checked::after {
