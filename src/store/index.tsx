@@ -27,13 +27,15 @@ export const useMovieStore = create((set) => ({
     { id: "RU", name: "Russian" },
     { id: "PO", name: "Polish" },
   ],
-  modalOpen: false,
+  filtersModalOpen: false,
+  errorModalOpen: false,
   modalErrors: [],
 
   setResults: (results: []) => set({ results, totalCount: results.length }),
   setGenreOptions: (genreOptions: []) => set({ genreOptions }),
   setLanguageOptions: (languageOptions: []) => set({ languageOptions }),
-  setModalOpen: (modalOpen: boolean) => set({ modalOpen }),
+  setErrorModalOpen: (errorModalOpen: boolean) => set({ errorModalOpen }),
+  setFiltersModalOpen: (filtersModalOpen: boolean) => set({ filtersModalOpen }),
   setModalErrors: (modalErrors: string[]) => set({ modalErrors }),
   setKeyword: (keyword: string) => set({ keyword }),
   setYear: (year: number) => set({ year }),
@@ -45,7 +47,7 @@ export const useMovieStore = create((set) => ({
     } else {
       set({
         modalErrors: ["There are no matches for this search"],
-        modalOpen: true,
+        errorModalOpen: true,
       });
     }
   },

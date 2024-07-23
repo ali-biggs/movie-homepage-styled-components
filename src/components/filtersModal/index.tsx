@@ -1,32 +1,28 @@
 import React from "react";
 import styled from "styled-components";
 import * as colors from "../../colors";
+import ExpandableFilters from "../expandablefilters";
+import { useMovieStore } from "../../store";
 
-type ErrorModalProps = {
-  errors: string[];
+type FiltersModalProps = {
   isOpen: boolean;
   onClose: () => void;
 };
 
-export default function ErrorModal({
-  errors,
+export default function FiltersModal({
   isOpen,
   onClose,
-}: Readonly<ErrorModalProps>) {
-  if (!isOpen) return null;
+}: Readonly<FiltersModalProps>) {
+  const {
+    filtersModalOpen,
+    setFiltersModalOpen,
+  } = useMovieStore((state: any) => state);
+  if (!filtersModalOpen) return null;
 
   return (
     <Overlay>
       <ModalWrapper>
-        <Title>Errors</Title>
-
-        {errors?.map((error, index) => {
-          return (
-            <div key={index}>
-              <Message>{error}</Message>
-            </div>
-          );
-        })}
+        <ExpandableFilters />
 
         <CloseButton onClick={onClose} role="close-button">
           Close

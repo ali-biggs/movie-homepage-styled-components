@@ -1,15 +1,15 @@
 import React, { useState, useCallback, useRef } from "react";
 import styled, { css } from "styled-components";
+import { useMovieStore } from "../../store";
 import { media } from "../../utils/mediaBreakPoints";
 import { useMediaQuery } from "../../utils/useMediaQuery";
 import debounce from "debounce";
-// import debounce from 'lodash/debounce';
 
 import * as colors from "../../colors";
 import SearchIcon from "../../images/search-icon-yellow.png";
 import CalendarIcon from "../../images/year-icon.png";
 import FilterIcon from "../../images/filter-icon.png";
-import { useMovieStore } from "../../store";
+import FiltersModal from "../filtersModal";
 
 interface KeySearchIconProps {
   magnifyingGlass?: boolean;
@@ -20,9 +20,13 @@ interface KeySearchIconProps {
 export default function SearchBar() {
   const [keyWord, setKeyWord] = useState<string>("");
   const [releaseYear, setReleaseYear] = useState<string | undefined>("");
-  const { setModalOpen, setModalErrors, searchMovies } = useMovieStore(
-    (state: any) => state
-  );
+  const {
+    setErrorModalOpen,
+    setModalErrors,
+    searchMovies,
+    setFiltersModalOpen,
+    filtersModalOpen,
+  } = useMovieStore((state: any) => state);
   const isMobile: boolean = useMediaQuery("(max-width: 480px)");
 
   // Keep track of the request timestamp to manage rate limiting
@@ -45,10 +49,10 @@ export default function SearchBar() {
         await searchMovies(keyword, year);
         lastRequestTimeRef.current = Date.now(); // Update the last request time
       } catch (err) {
-        setModalErrors(
-          ["An error occurred while searching. Please try again later."]
-        );
-        setModalOpen(true);
+        setModalErrors([
+          "An error occurred while searching. Please try again later.",
+        ]);
+        setErrorModalOpen(true);
       }
     }, 300), // 300ms debounce delay
     [searchMovies]
@@ -85,6 +89,7 @@ export default function SearchBar() {
             aria-label="Filter options"
             aria-hidden={!isMobile}
             aria-expanded="false"
+            onClick={() => setFiltersModalOpen(true)}
           />
         )}
       </MobileSearchWrapper>
@@ -97,6 +102,13 @@ export default function SearchBar() {
             value={releaseYear || ""}
           />
         </SearchWrapper>
+      )}
+
+      {filtersModalOpen && (
+        <FiltersModal
+          isOpen={filtersModalOpen}
+          onClose={() => setFiltersModalOpen(false)}
+        />
       )}
     </>
   );

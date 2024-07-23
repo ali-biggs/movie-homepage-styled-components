@@ -23,18 +23,18 @@ export default function Discover({
     genreOptions,
     totalCount,
     results,
-    modalOpen,
+    errorModalOpen,
     modalErrors,
-    setModalOpen,
+    setErrorModalOpen,
     setModalErrors,
     initialLoad,
   } = useMovieStore((state: any) => state);
-  console.log("store", { modalErrors, modalOpen });
+  console.log("store", { modalErrors, errorModalOpen });
   const isMobile = useMediaQuery("(max-width: 480px)");
 
   const handleModalClose = () => {
     setModalErrors([]);
-    setModalOpen(false);
+    setErrorModalOpen(false);
     initialLoad();
   };
 
@@ -74,10 +74,10 @@ export default function Discover({
         </GridContainer>
       </DiscoverWrapper>
 
-      {modalOpen && (
+      {errorModalOpen && (
         <ErrorModal
           errors={modalErrors}
-          isOpen={modalOpen}
+          isOpen={errorModalOpen}
           onClose={() => handleModalClose()}
         />
       )}
