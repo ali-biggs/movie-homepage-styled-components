@@ -44,7 +44,6 @@ export default function SearchBar() {
       try {
         await searchMovies(keyword, year);
         lastRequestTimeRef.current = Date.now(); // Update the last request time
-        setModalErrors(null);
       } catch (err) {
         setModalErrors(
           ["An error occurred while searching. Please try again later."]

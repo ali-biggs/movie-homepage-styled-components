@@ -74,7 +74,7 @@ export default function Discover({
         </GridContainer>
       </DiscoverWrapper>
 
-      {modalOpen & modalErrors && (
+      {modalOpen && (
         <ErrorModal
           errors={modalErrors}
           isOpen={modalOpen}
