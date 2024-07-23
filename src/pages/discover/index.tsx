@@ -29,7 +29,6 @@ export default function Discover({
     setModalErrors,
     initialLoad,
   } = useMovieStore((state: any) => state);
-  console.log("store", { modalErrors, errorModalOpen });
   const isMobile = useMediaQuery("(max-width: 480px)");
 
   const handleModalClose = () => {

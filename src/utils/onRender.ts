@@ -1,5 +1,3 @@
-//import { Interaction } from 'scheduler';
-
 export const onRender = (
   id: string,
   phase: string,
@@ -7,7 +5,6 @@ export const onRender = (
   baseDuration: number,
   startTime: number,
   commitTime: number,
-//   interactions: Set<Interaction>
 ) => {
   console.log("Profiler data");
   console.log("id:", id);
@@ -16,5 +13,4 @@ export const onRender = (
   console.log("baseDuration:", baseDuration);
   console.log("startTime:", startTime);
   console.log("commitTime:", commitTime);
-//   console.log("interactions:", interactions);
 };

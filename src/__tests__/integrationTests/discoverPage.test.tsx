@@ -1,6 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Discover from "../../pages/discover";
 import { useMovieStore } from "../../store";
 import { useMediaQuery } from "../../utils/useMediaQuery";
